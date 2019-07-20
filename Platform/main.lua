@@ -33,24 +33,26 @@ function love.load()
 	love.window.setMode(900,650)
 end
 
+force = 0
+
 function love.update (dt)
 	world:update(dt)
 	local xVelocity, yVelocity = objects.ball.body:getLinearVelocity();
 
 	if love.keyboard.isDown("right") then
-		objects.ball.body:applyForce(400,0)
+		force = 400
+		objects.ball.body:applyForce(force,0)
 		print('x: ' .. tostring(xVelocity));
-		local resistency = xVelocity
-		if resistency > 400 then resistency = 400 end
-		objects.ball.body:applyForce(-resistency, 0)
 
 	elseif love.keyboard.isDown("left") then
-		objects.ball.body:applyForce(-400,0)
+		force = -400
+		objects.ball.body:applyForce(force,0)
 		print('x: ' .. tostring(xVelocity));
-		local resistency = xVelocity
-		if resistency < -400 then resistency = -400 end
-		objects.ball.body:applyForce(-resistency, 0)
 	end
+
+	local resistency = xVelocity
+	if resistency > math.abs(force) then resistency = force end
+	objects.ball.body:applyForce(-resistency, 0)
 
 	if love.keyboard.isDown("up") then
 		objects.ball.body:applyForce(0,-800)
