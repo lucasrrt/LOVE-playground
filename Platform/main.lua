@@ -4,9 +4,14 @@ function love.load()
 
 	objects = {}
 	objects.floor = {}
-	objects.floor.body  = love.physics.newBody(world, 650/2,650 -50 /2)
-	objects.floor.shape = love.physics.newRectangleShape(650,50)
+	objects.floor.body  = love.physics.newBody(world, 900/2,650 -50 /2)
+	objects.floor.shape = love.physics.newRectangleShape(900,50)
 	objects.floor.fixture = love.physics.newFixture(objects.floor.body, objects.floor.shape)
+	
+	objects.wall = {}
+	objects.wall.body  = love.physics.newBody(world, 900 - 50/2,650/2)
+	objects.wall.shape = love.physics.newRectangleShape(50,650)
+	objects.wall.fixture = love.physics.newFixture(objects.wall.body, objects.wall.shape)
 	
 	objects.ball = {}
 	objects.ball.body  = love.physics.newBody(world, 650/2,650/2, "dynamic")
@@ -30,10 +35,10 @@ end
 
 function love.update (dt)
 	world:update(dt)
+	local xVelocity, yVelocity = objects.ball.body:getLinearVelocity();
 
 	if love.keyboard.isDown("right") then
 		objects.ball.body:applyForce(400,0)
-		local xVelocity, yVelocity = objects.ball.body:getLinearVelocity();
 		print('x: ' .. tostring(xVelocity));
 		local resistency = xVelocity
 		if resistency > 400 then resistency = 400 end
@@ -41,7 +46,6 @@ function love.update (dt)
 
 	elseif love.keyboard.isDown("left") then
 		objects.ball.body:applyForce(-400,0)
-		local xVelocity, yVelocity = objects.ball.body:getLinearVelocity();
 		print('x: ' .. tostring(xVelocity));
 		local resistency = xVelocity
 		if resistency < -400 then resistency = -400 end
@@ -50,7 +54,6 @@ function love.update (dt)
 
 	if love.keyboard.isDown("up") then
 		objects.ball.body:applyForce(0,-800)
-		local xVelocity, yVelocity = objects.ball.body:getLinearVelocity();
 		print("y: " .. tostring(yVelocity));
 		local resistency = yVelocity
 		if resistency < -800 then resistency = -800 end
@@ -66,6 +69,7 @@ end
 function love.draw()
 	love.graphics.setColor(72,160,14)
 	love.graphics.polygon("fill", objects.floor.body:getWorldPoints(objects.floor.shape:getPoints()))
+	love.graphics.polygon("fill", objects.wall.body:getWorldPoints(objects.wall.shape:getPoints()))
 
 	love.graphics.setColor(193,47,14)
 	love.graphics.circle("fill", objects.ball.body:getX(), objects.ball.body:getY(), objects.ball.shape:getRadius())
