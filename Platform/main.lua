@@ -15,9 +15,9 @@ function love.load()
 	
 	objects.ball = {}
 	objects.ball.body  = love.physics.newBody(world, 650/2,650/2, "dynamic")
-	objects.ball.shape = love.physics.newCircleShape(20)
+	objects.ball.body:setFixedRotation(true)
+	objects.ball.shape = love.physics.newRectangleShape(20, 20)
 	objects.ball.fixture = love.physics.newFixture(objects.ball.body, objects.ball.shape,1)
-	--objects.ball.fixture:setRestitution(0)
 	
 	objects.block1 = {}
 	objects.block1.body  = love.physics.newBody(world, 200,550, "dynamic")
@@ -74,7 +74,7 @@ function love.draw()
 	love.graphics.polygon("fill", objects.wall.body:getWorldPoints(objects.wall.shape:getPoints()))
 
 	love.graphics.setColor(193/255,47/255,14/255)
-	love.graphics.circle("fill", objects.ball.body:getX(), objects.ball.body:getY(), objects.ball.shape:getRadius())
+	love.graphics.polygon("fill", objects.ball.body:getWorldPoints(objects.ball.shape:getPoints()))
 	
 	love.graphics.setColor(50/255,50/255,50/255)
 	love.graphics.polygon("fill", objects.block1.body:getWorldPoints(objects.block1.shape:getPoints()))
