@@ -43,24 +43,18 @@ function love.update (dt)
 	if love.keyboard.isDown("right") then
 		force = 400
 		objects.ball.body:applyForce(force,0)
-		print('x: ' .. tostring(xVelocity));
 
 	elseif love.keyboard.isDown("left") then
 		force = -400
 		objects.ball.body:applyForce(force,0)
-		print('x: ' .. tostring(xVelocity));
 	end
 
 	local resistency = xVelocity
-	if resistency > math.abs(force) then resistency = force end
+	if resistency >= math.abs(force) then resistency = force end
 	objects.ball.body:applyForce(-resistency, 0)
 
-	if love.keyboard.isDown("up") and math.abs(yVelocity) <= 10 then
+	if love.keyboard.isDown("up") and math.abs(yVelocity) <= 0.01 then
 		objects.ball.body:setLinearVelocity(xVelocity,-400)
-		print("y: " .. tostring(yVelocity));
-		-- local resistency = yVelocity
-		-- if resistency < -800 then resistency = -800 end
-		-- objects.ball.body:applyForce(0, -resistency)
 	end
 
 	if love.keyboard.isDown("return") then
