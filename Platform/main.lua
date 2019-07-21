@@ -18,6 +18,7 @@ function love.load()
 	objects.ball.body:setFixedRotation(true)
 	objects.ball.shape = love.physics.newRectangleShape(20, 20)
 	objects.ball.fixture = love.physics.newFixture(objects.ball.body, objects.ball.shape,1)
+	objects.ball.fixture:setFriction(0)
 	
 	objects.block1 = {}
 	objects.block1.body  = love.physics.newBody(world, 200,550, "dynamic")
