@@ -35,25 +35,39 @@ function love.load()
 end
 
 local force = 0
+local isMoving = false
+
+function inGround(yVelocity)
+	return math.abs(yVelocity) <= 0.01
+end
 
 function love.update (dt)
 	world:update(dt)
 	local xVelocity, yVelocity = objects.ball.body:getLinearVelocity();
 
 	if love.keyboard.isDown("right") then
+    isMoving = true
 		force = 400
 		objects.ball.body:applyForce(force,0)
 
 	elseif love.keyboard.isDown("left") then
+    isMoving = true
 		force = -400
 		objects.ball.body:applyForce(force,0)
-	end
+	else
+    isMoving = false
+    force = 0
+  end
 
-	local resistency = xVelocity
-	if resistency >= math.abs(force) then resistency = force end
-	objects.ball.body:applyForce(-resistency, 0)
+  if isMoving or inGround(yVelocity) then
+    local resistency = xVelocity
+    objects.ball.body:applyForce(-resistency, 0)
+  else 
+    local resistency = xVelocity / 5
+    objects.ball.body:applyForce(-resistency, 0)
+  end
 
-	if love.keyboard.isDown("up") and math.abs(yVelocity) <= 0.01 then
+	if love.keyboard.isDown("up") and inGround(yVelocity) then
 		objects.ball.body:setLinearVelocity(xVelocity,-400)
 	end
 
